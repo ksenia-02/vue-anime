@@ -1,21 +1,16 @@
 <template>
-  <div id= "app">
-    <div>
-      <b-nav tabs fill>
-        <b-nav-item active>Active</b-nav-item>
-        <b-nav-item>Link</b-nav-item>
-        <b-nav-item>Link with a long name </b-nav-item>
-        <b-nav-item disabled>Disabled</b-nav-item>
-      </b-nav>
-    </div>
+  <div id="app">
     <router-view/>
   </div>
 </template>
 
 <script>
 
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+
 export default {
-  components: {}
+  components: {Header, Card}
 
 }
 </script>

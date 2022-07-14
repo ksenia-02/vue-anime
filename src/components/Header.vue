@@ -1,0 +1,18 @@
+<template>
+  <div class="p-3 mb-2 bg-danger text-white bg-opacity-50">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
+      <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Header"
+}
+</script>
+
+<style scoped>
+
+</style>
