@@ -12,7 +12,7 @@
         <div class="mb-1 text-muted">Nov 12</div>
         <p class="card-text mb-auto">{{ anime_data.description }}</p>
         <div class="d-grid gap-1 d-md-flex justify-content-md-end">
-          <button type="button" class="btn btn-outline-danger btn-sm">Открыть</button>
+          <button type="button" v-on:click="goTo(anime_data.id)" class="btn btn-outline-danger btn-sm">Открыть</button>
         </div>
       </div>
     </div>
@@ -37,7 +37,11 @@ export default {
       }
     }
   },
-  methods: {},
+  methods: {
+    goTo(id){
+      this.$router.push({ name : 'SingleView', params: {id:id}})
+    }
+  },
   data() {
     return {}
   },
