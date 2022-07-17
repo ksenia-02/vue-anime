@@ -1,41 +1,48 @@
 <template>
+
   <Header/>
-  <Reviews
-  :anime="id"
-  :listReview="reviews"
-  />
+  <b-container fluid="md">
+    <InfoCard
+        :anime_data="anime"
+        :list_genre="genres"/>
+    <Reviews
+        :anime_data="anime"
+    />
+  </b-container>
 </template>
 
 <script>
 import Header from "@/components/Header";
 import Reviews from "@/components/Reviews";
+import InfoCard from "@/components/InfoCard";
 
 export default {
   name: "SingleView",
-  components: {Reviews, Header},
-  props:['id'],
-  data(){
+  components: {InfoCard, Reviews, Header},
+  props: ['id'],
+  data() {
     return {
-      anime:{},
-      reviews:[]
+      anime: {},
+      genres: []
     }
   },
   created() {
-    this.loadAnime(),
-        this.loadReviews()
+    this.loadAnime()
   },
-  methods:{
-    async loadAnime(){
+  methods: {
+    async loadAnime() {
       this.anime = await fetch(
           `${this.$store.getters.getServerUrl}/anime/${this.id}`
-      ).then(response=>response.json())
+      ).then(response => response.json())
+      this.loadListGenre()
     },
-    async loadReviews(){
-      let all_reviews= await fetch(
-          `${this.$store.getters.getServerUrl}/reviews/`
-      ).then(response=>response.json())
-      this.reviews = all_reviews.filter(review=>review.anime == this.id)
-      console.log(this.reviews)
+    async loadListGenre() {
+      for(let genre_i of this.anime.genres) {
+        let genre = await fetch(
+            `${this.$store.getters.getServerUrl}/genre/${genre_i}`
+        ).then(response => response.json())
+        this.genres.push(genre)
+      }
     }
   }
 }

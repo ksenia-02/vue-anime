@@ -20,11 +20,11 @@
 <script>
 export default {
   name: "FormReview",
+  props:["id"],
   data() {
     return {
       name: '',
       text: '',
-      parent: null,
       children: []
     }
   },
@@ -33,7 +33,7 @@ export default {
       let data = {
         name: this.name,
         text: this.text,
-        parent: this.parent,
+        parent: this.id,
         children: this.children
       }
       this.$emit('sendReview',data)

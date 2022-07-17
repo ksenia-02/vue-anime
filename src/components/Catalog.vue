@@ -1,11 +1,11 @@
 <template>
   <b-container fluid="sm">
-    <div class="row mb-2">
+    <Info/>
+    <div class="catalog row mb-3">
       <Card
           v-for="anime in listAnime"
           :key="anime.id"
           v-bind:anime_data="anime"
-          v-bind:list_genre="listGenre"
       />
     </div>
   </b-container>
@@ -14,31 +14,28 @@
 <script>
 
 import Card from "@/components/Card";
+import Info from "@/components/Info";
 
 export default {
   name: "Catalog",
+  props: {
+  },
   components: {
+    Info,
     Card
   },
   data() {
     return {
-      listAnime: [],
-      listGenre: []
+      listAnime: []
     }
   },
   created() {
-    this.loadListAnime(),
-        this.loadListGenre()
+    this.loadListAnime()
   },
   methods: {
     async loadListAnime() {
       this.listAnime = await fetch(
           `${this.$store.getters.getServerUrl}/anime`
-      ).then(response => response.json())
-    },
-    async loadListGenre() {
-      this.listGenre = await fetch(
-          `${this.$store.getters.getServerUrl}/genre`
       ).then(response => response.json())
     }
   }
@@ -46,5 +43,7 @@ export default {
 </script>
 
 <style scoped>
-
+.catalog{
+  margin-top: 5%
+}
 </style>

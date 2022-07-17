@@ -1,9 +1,11 @@
 <template>
   <div class="col-md-6">
-    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+    <div class="one row mb-2 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div class="col p-4 d-flex flex-column position-static">
-        <div v-for="genre in list_genre" :key="genre.id" class="col-md-4 product-men">
-          <strong class="d-inline-block mb-2 text-primary">{{ genre.name }}</strong>
+        <div class="blok_genres">
+          <div v-for="genre in list_genre" :key="genre.id" class="blok_genre">
+            {{ genre.name }}
+          </div>
         </div>
         <h3 class="mb-0">{{ anime_data.title }}</h3>
         <div class="col-md-3 card">
@@ -29,21 +31,28 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  created() {
+    this.loadListGenre()
+  },
+  methods: {
+    goTo(id) {
+      this.$router.push({name: 'SingleView', params: {id: id}})
     },
-    list_genre: {
-      type: Array,
-      default() {
-        return []
+    async loadListGenre() {
+      for (let genre_i of this.anime_data.genres) {
+        let genre = await fetch(
+            `${this.$store.getters.getServerUrl}/genre/${genre_i}`
+        ).then(response => response.json())
+        this.list_genre.push(genre)
       }
     }
   },
-  methods: {
-    goTo(id){
-      this.$router.push({ name : 'SingleView', params: {id:id}})
-    }
-  },
   data() {
-    return {}
+    return {
+      list_genre: []
+    }
   },
 }
 </script>
@@ -56,5 +65,19 @@ export default {
   margin-bottom: 10px;
   width: 300px;
   height: 300px;
+}
+.one{
+  background-color: rgba(225, 210, 210, 0.5);
+}
+.blok_genres{
+  overflow:hidden;
+  width:300px;
+  height:60px;
+  white-space:nowrap;
+  border:1px solid black;
+}
+.blok_genre{
+  width:100px;
+  display:inline-block;
 }
 </style>
