@@ -5,12 +5,15 @@ const store = createStore({
         state: {
             backendUrl: "http://127.0.0.1:8000",
             genre: [],
-            genreSingle: [],
+            genreSingle: '',
             marks: [],
         },
         mutations: {
             set_genre(state, genres) {
                 state.genre = genres;
+            },
+            setOneGenre(state, genres) {
+                state.genreSingle = genres;
             },
             set_marks(state, marks) {
                 state.marks = marks;
@@ -23,7 +26,7 @@ const store = createStore({
                 ).then(response => response.json().then(data => commit('set_genre', data)))
             },
             setGenresSingle({commit}, list_genre) {
-                this.state.genreSingle = list_genre
+                commit('setOneGenre', list_genre)
             },
             loadListMarks({commit}) {
                 return fetch(

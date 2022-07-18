@@ -4,8 +4,7 @@
     <main class="d-flex flex-nowrap">
       <b-container class = "main_page" fluid="md">
         <InfoCard
-            :anime_data="anime"
-            :list_genre="genres"/>
+            :anime_data="anime"/>
         <Reviews
             :anime_data="anime"
         />
@@ -26,7 +25,6 @@ export default {
   data() {
     return {
       anime: {},
-      genres: []
     }
   },
   created() {
@@ -37,13 +35,6 @@ export default {
       this.anime = await fetch(
           `${this.$store.getters.getServerUrl}/anime/${this.id}`
       ).then(response => response.json())
-      this.loadListGenre()
-    },
-    loadListGenre() {
-      for (let genre_i of this.anime.genres) {
-        let genre =this.$store.state.genre.find(obj=>obj.id==genre_i)
-        this.genres = this.genre + String(genre.name) + ". "
-      }
     },
   }
 }

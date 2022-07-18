@@ -7,9 +7,8 @@
     <div v-if="checkParent(review)">
       <p class="fs-2">{{ review.name }}</p>
       <p class="fs-6">{{ review.text }}</p>
-      <div v-for="child in review.children" :key="child.id">
-        <p class="fs-3">{{ child.name }}</p>
-        <p class="fs-6">{{ child.text }}</p>
+      <div v-for="child in review.children" :key="child">
+        <p>{{ this.loadReviews(child).name }}</p>
       </div>
     </div>
     <div class="collapse" id="answer">
@@ -52,7 +51,7 @@ export default {
       ).then(response => response.json())
       this.listReview = all_reviews.filter(review => review.anime == this.anime_data.id)
     },
-    async tosendReview(data) {
+    tosendReview(data) {
       data["anime"] = this.anime_data.id
       fetch(`${this.$store.getters.getServerUrl}/reviews/`, {
         method: "POST",
@@ -61,8 +60,7 @@ export default {
         },
         body: JSON.stringify(data)
       }).then(response => {
-        this.addChild(response.json())
-        location.reload();
+        (response.json().then(data => this.addChild(data)))
       })
     },
     checkParent(review) {
@@ -76,22 +74,23 @@ export default {
       }
       //console.log(this.answer_id)
     },
-    async addChild(respons) {
-      let data = await (respons)
-
-      let parent_review = await fetch(
-          `${this.$store.getters.getServerUrl}/reviews/${data.parent}`
+    async loadComment(id) {
+      let comment = await fetch(
+          `${this.$store.getters.getServerUrl}/reviews/${id}`
       ).then(response => response.json())
-      parent_review.children.push(data.id)
-
-      fetch(`${this.$store.getters.getServerUrl}/reviews/${data.parent}`, {
+      return comment
+    },
+    async addChild(response) {
+      let data = await this.loadComment(response.parent)
+      data.children.push(response.parent)
+      fetch(`${this.$store.getters.getServerUrl}/reviews/${response.parent}`, {
         method: "PUT",
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({children: parent_review.children})
+        body: JSON.stringify(data)
       }).then(response => {
-        this.addChild(response.json())
+        console.log(response)
       })
     }
   }

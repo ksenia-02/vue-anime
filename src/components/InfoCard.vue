@@ -15,6 +15,8 @@
           <p class="card-text" style="min-height:200px;">{{ anime_data.description }}</p>
           <hr class="featurette-divider">
           <p class="fw-bolder">Оценка</p>
+          <p class="card-text">{{ getMarkStatus(anime_data.mark) }} -- {{ getMarkValue(anime_data.mark) }}</p>
+
         </div>
       </div>
     </div>
@@ -22,21 +24,37 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "InfoCard",
   props: {
-    list_genre: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
     anime_data: {
       type: Object,
       default() {
         return {}
       }
     }
+  },
+  mounted() {
+    this.loadListMarks()
+  },
+  methods:{
+  ...mapActions([
+    'loadListMarks'
+  ]),
+    getMarkStatus(id) {
+      let obj_mark = this.$store.getters.getMark(id);
+      if (obj_mark != undefined) {
+        return String(obj_mark.status)
+      }
+    },
+    getMarkValue(id) {
+      let obj_mark = this.$store.getters.getMark(id);
+      if (obj_mark != undefined) {
+        return String(obj_mark.value)
+      }
+    },
   }
 }
 </script>

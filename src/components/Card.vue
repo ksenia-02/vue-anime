@@ -42,7 +42,7 @@ export default {
         this.loadListAuthor()
   },
   mounted() {
-    this.loadListMarks()
+        this.loadListMarks()
   },
   methods: {
     ...mapActions([
@@ -61,9 +61,8 @@ export default {
     },
     getMarkName(id) {
       let obj_mark = this.$store.getters.getMark(id);
-      console.log(obj_mark)
       if (obj_mark != undefined) {
-        return String(obj_mark.status)+"--"+String(obj_mark.value)+"баллов"
+        return String(obj_mark.status) + "--" + String(obj_mark.value) + "баллов"
       }
     },
     async loadListAuthor() {
