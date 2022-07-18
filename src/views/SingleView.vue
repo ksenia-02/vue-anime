@@ -1,14 +1,17 @@
 <template>
-
-  <Header/>
-  <b-container fluid="md">
-    <InfoCard
-        :anime_data="anime"
-        :list_genre="genres"/>
-    <Reviews
-        :anime_data="anime"
-    />
-  </b-container>
+  <div class="single">
+    <Header/>
+    <main class="d-flex flex-nowrap">
+      <b-container class = "main_page" fluid="md">
+        <InfoCard
+            :anime_data="anime"
+            :list_genre="genres"/>
+        <Reviews
+            :anime_data="anime"
+        />
+      </b-container>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -36,18 +39,22 @@ export default {
       ).then(response => response.json())
       this.loadListGenre()
     },
-    async loadListGenre() {
-      for(let genre_i of this.anime.genres) {
-        let genre = await fetch(
-            `${this.$store.getters.getServerUrl}/genre/${genre_i}`
-        ).then(response => response.json())
-        this.genres.push(genre)
+    loadListGenre() {
+      for (let genre_i of this.anime.genres) {
+        let genre =this.$store.state.genre.find(obj=>obj.id==genre_i)
+        this.genres = this.genre + String(genre.name) + ". "
       }
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
+.single {
+  background-image: url(../assets/images/back.jpg);
+}
 
+.main_page {
+  margin-top: 5%;
+}
 </style>

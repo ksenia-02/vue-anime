@@ -15,7 +15,7 @@
             <div class="mb-1 text-muted">{{ author }}</div>
             <p class="card-text mb-auto">{{ anime_data.description }}</p>
           </div>
-          <button type="button" v-on:click="goTo(anime_data.id)" class="btn btn-outline-danger btn-sm">Открыть
+          <button type="button" v-on:click="goTo()" class="btn btn-outline-danger btn-sm">Открыть
           </button>
         </div>
       </div>
@@ -25,6 +25,8 @@
 
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "Card",
   props: {
@@ -33,38 +35,43 @@ export default {
       default() {
         return {}
       }
-    },
-    marks: {
-      type: Array,
-      default() {
-        return []
-      }
     }
   },
   created() {
     this.loadListGenre(),
         this.loadListAuthor()
   },
+  mounted() {
+    this.loadListMarks()
+  },
   methods: {
-    goTo(id) {
-      this.$router.push({name: 'SingleView', params: {id: id}})
+    ...mapActions([
+      'setGenresSingle',
+      'loadListMarks'
+    ]),
+    goTo() {
+      this.setGenresSingle(this.list_genre);
+      this.$router.push({name: 'SingleView', params: {id: this.anime_data.id}})
     },
-    async loadListGenre() {
+    loadListGenre() {
       for (let genre_i of this.anime_data.genres) {
-        let genre = await fetch(
-            `${this.$store.getters.getServerUrl}/genre/${genre_i}`
-        ).then(response => response.json())
+        let genre = this.$store.state.genre.find(obj => obj.id == genre_i)
         this.list_genre = this.list_genre + String(genre.name) + ". "
       }
     },
     getMarkName(id) {
-      return this.marks.find(mark => mark.id == id).status
+      let obj_mark = this.$store.getters.getMark(id);
+      console.log(obj_mark)
+      if (obj_mark != undefined) {
+        return String(obj_mark.status)+"--"+String(obj_mark.value)+"баллов"
+      }
     },
     async loadListAuthor() {
       this.author = await fetch(
           `${this.$store.getters.getServerUrl}/username/${this.anime_data.user}`
       ).then(response => response.json())
-    }
+    },
+
   },
   data() {
     return {

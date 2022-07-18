@@ -33,7 +33,7 @@ export default {
       this.$router.push({name: 'home'})
     },
     async auth() {
-      fetch(`${this.$store.getters.getServerUrl}/aut/login/`, {
+      fetch(`${this.$store.getters.getServerUrl}/auth/login/`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

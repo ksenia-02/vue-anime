@@ -6,7 +6,6 @@
           v-for="anime in listAnime"
           :key="anime.id"
           v-bind:anime_data="anime"
-          :marks="mark"
       />
     </div>
   </b-container>
@@ -19,7 +18,7 @@ import Info from "@/components/Info";
 
 export default {
   name: "Catalog",
-  props: ["mark"],
+  props: [],
   components: {
     Info,
     Card
