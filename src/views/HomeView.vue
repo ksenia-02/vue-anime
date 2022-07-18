@@ -4,7 +4,8 @@
     <main class="main_page d-flex flex-nowrap">
       <Sidebar
           :list_genre="this.genre"/>
-      <Catalog/>
+      <Catalog
+      :mark="marks"/>
     </main>
   </div>
 </template>
@@ -24,16 +25,23 @@ export default {
   },
   data() {
     return {
-      genre: []
+      genre: [],
+      marks: []
     }
   },
   created() {
-    this.loadListGenre()
+    this.loadListGenre(),
+        this.loadListMarks()
   },
   methods: {
     async loadListGenre() {
       this.genre = await fetch(
           `${this.$store.getters.getServerUrl}/genre/`
+      ).then(response => response.json())
+    },
+    async loadListMarks() {
+      this.marks = await fetch(
+          `${this.$store.getters.getServerUrl}/star/`
       ).then(response => response.json())
     }
   }

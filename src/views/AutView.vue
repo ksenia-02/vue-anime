@@ -40,12 +40,12 @@ export default {
         },
         body: JSON.stringify(
             {
-              user: this.user,
+              username: this.user,
               password: this.password
             }
         )
       }).then(response => {
-        this.addChild(response.json())
+        console.log(response.json())
       })
       this.goTo()
     }

@@ -3,18 +3,20 @@
     <div class="one row mb-2 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
       <div class="col p-4 d-flex flex-column position-static">
         <div class="blok_genres">
-          <div v-for="genre in list_genre" :key="genre.id" class="blok_genre">
-            {{ genre.name }}
-          </div>
+          <p class="card-text mb-auto">{{ list_genre }}</p>
         </div>
-        <h3 class="mb-0">{{ anime_data.title }}</h3>
+        <p class="card-text mb-auto">{{ getMarkName(anime_data.mark) }}</p>
+        <h3 class="title mb-0">{{ anime_data.title }}</h3>
         <div class="col-md-3 card">
           <b-img :src="`${$store.getters.getServerUrl}`+anime_data.poster"></b-img>
         </div>
-        <div class="mb-1 text-muted">Nov 12</div>
-        <p class="card-text mb-auto">{{ anime_data.description }}</p>
-        <div class="d-grid gap-1 d-md-flex justify-content-md-end">
-          <button type="button" v-on:click="goTo(anime_data.id)" class="btn btn-outline-danger btn-sm">Открыть</button>
+        <div class="wrapper">
+          <div class="info">
+            <div class="mb-1 text-muted">{{ author }}</div>
+            <p class="card-text mb-auto">{{ anime_data.description }}</p>
+          </div>
+          <button type="button" v-on:click="goTo(anime_data.id)" class="btn btn-outline-danger btn-sm">Открыть
+          </button>
         </div>
       </div>
     </div>
@@ -31,10 +33,17 @@ export default {
       default() {
         return {}
       }
+    },
+    marks: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   created() {
-    this.loadListGenre()
+    this.loadListGenre(),
+        this.loadListAuthor()
   },
   methods: {
     goTo(id) {
@@ -45,15 +54,24 @@ export default {
         let genre = await fetch(
             `${this.$store.getters.getServerUrl}/genre/${genre_i}`
         ).then(response => response.json())
-        this.list_genre.push(genre)
+        this.list_genre = this.list_genre + String(genre.name) + ". "
       }
+    },
+    getMarkName(id) {
+      return this.marks.find(mark => mark.id == id).status
+    },
+    async loadListAuthor() {
+      this.author = await fetch(
+          `${this.$store.getters.getServerUrl}/username/${this.anime_data.user}`
+      ).then(response => response.json())
     }
   },
   data() {
     return {
-      list_genre: []
+      list_genre: '',
+      author: ''
     }
-  },
+  }
 }
 </script>
 
@@ -63,21 +81,31 @@ export default {
   float: left;
   margin-right: 10px;
   margin-bottom: 10px;
-  width: 300px;
+  width: 80%;
   height: 300px;
 }
-.one{
+
+.one {
   background-color: rgba(225, 210, 210, 0.5);
 }
-.blok_genres{
-  overflow:hidden;
-  width:300px;
-  height:60px;
-  white-space:nowrap;
-  border:1px solid black;
+
+.blok_genres {
+  overflow: hidden;
+  width: 300px;
+  height: 80px;
+  word-break: break-all;
 }
-.blok_genre{
-  width:100px;
-  display:inline-block;
+
+.wrapper {
+  height: 260px;
+}
+
+.info {
+  overflow-x: hidden;
+  height: 200px;
+}
+
+.title {
+  height: 90px;
 }
 </style>
