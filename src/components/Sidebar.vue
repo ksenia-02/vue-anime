@@ -26,11 +26,6 @@ import {mapActions} from 'vuex'
 export default {
   name: "Sidebar",
   props:["filter"],
-  data() {
-    return {}
-  },
-  created() {
-  },
   methods: {
     ...mapActions([
       'getGenreFromAPI'

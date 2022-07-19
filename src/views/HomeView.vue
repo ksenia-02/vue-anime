@@ -45,7 +45,6 @@ export default {
       this.anime = this.allAnime.filter(function (item) {
         return item.genres.includes(genre)
       })
-      console.log(this.anime)
     }
   }
 }

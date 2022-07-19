@@ -1,7 +1,7 @@
 <template>
   <div ip="reviews">
     <FormReview
-        @sendReview="tosendReview"
+        @sendReview="toReview"
         :id="answer_id"
     />
     <div class="com" v-for="(item,index) in listReview" :key="item.id">
@@ -15,7 +15,7 @@
         </div>
         <b-collapse :id="'com'+index">
           <FormReview
-              @sendReview="tosendReview"
+              @sendReview="toReview"
               :id="answer_id"
           />
         </b-collapse>
@@ -32,6 +32,7 @@
 
 <script>
 import FormReview from "@/components/FormReview";
+import {toRaw} from "vue";
 
 export default {
   name: "Reviews",
@@ -56,7 +57,7 @@ export default {
     loadComment(id) {
       return this.listReview.find(obj => obj.id == id)
     },
-    tosendReview(data) {
+    toReview(data) {
       data["anime"] = this.anime_data.id
       fetch(`${this.$store.getters.getServerUrl}/reviews/`, {
         method: "POST",
@@ -79,28 +80,27 @@ export default {
       }
     },
     addChild(response) {
-      if (this.answer_id != null){
-        let data = this.loadComment(response.parent)
-        data.children.push(response.id)
-        fetch(`${this.$store.getters.getServerUrl}/reviews/${response.parent}`, {
-          method: "PUT",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        }).then(response => {})
-      }
-      this.$router.go(0);
+      let data = this.loadComment(response.parent)
+      data.children.push(response.id)
+      fetch(`${this.$store.getters.getServerUrl}/reviews/${response.parent}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(response => {
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-.com{
-  background-color:  rgba(255,255, 255, 0.5);
+.com {
+  background-color: rgba(255, 255, 255, 0.5);
   margin-top: 20px;
 }
+
 .ans {
   margin-left: 10%;
   background-color: rgba(231, 216, 216, 0.2);

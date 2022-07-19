@@ -2,7 +2,7 @@
   <div class="single">
     <Header/>
     <main class="d-flex flex-nowrap">
-      <b-container class="main_page" fluid="md">
+      <b-container class="main_page">
         <InfoCard
             :anime_data="anime"
             :name="author"
@@ -38,7 +38,7 @@ export default {
     this.loadAnime()
   },
   mounted() {
-        this.getGenreFromAPI()
+    this.getGenreFromAPI()
   },
   methods: {
     ...mapActions([
@@ -53,7 +53,10 @@ export default {
     loadListGenre() {
       for (let genre_i of this.anime.genres) {
         let genre = this.$store.state.genre.find(obj => obj.id === genre_i)
-        this.genres = this.genres + String(genre.name) + ". "
+        if (genre === undefined) {
+        } else {
+          this.genres = this.genres + String(genre.name) + ". "
+        }
       }
     },
     async loadAnime() {
