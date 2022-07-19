@@ -19,11 +19,6 @@ const routes = [
         name: 'SingleView',
         component: SingleView,
         props: true
-    },
-    {
-        path: '/about',
-        name: 'about',
-        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
     }
 ]
 

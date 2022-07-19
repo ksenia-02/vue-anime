@@ -2,9 +2,12 @@
   <div class="single">
     <Header/>
     <main class="d-flex flex-nowrap">
-      <b-container class = "main_page" fluid="md">
+      <b-container class="main_page" fluid="md">
         <InfoCard
-            :anime_data="anime"/>
+            :anime_data="anime"
+            :name="author"
+            :list_genre="genres"
+        />
         <Reviews
             :anime_data="anime"
         />
@@ -17,6 +20,8 @@
 import Header from "@/components/Header";
 import Reviews from "@/components/Reviews";
 import InfoCard from "@/components/InfoCard";
+import {toRaw} from "vue";
+import {mapActions} from "vuex";
 
 export default {
   name: "SingleView",
@@ -25,18 +30,40 @@ export default {
   data() {
     return {
       anime: {},
+      author: '',
+      genres: ''
     }
   },
   created() {
     this.loadAnime()
   },
+  mounted() {
+        this.getGenreFromAPI()
+  },
   methods: {
+    ...mapActions([
+      'getGenreFromAPI'
+    ]),
+    async loadNameAuthor() {
+      let id_author = toRaw(this.anime).user
+      this.author = await fetch(
+          `${this.$store.getters.getServerUrl}/username/${id_author}`
+      ).then(response => response.json())
+    },
+    loadListGenre() {
+      for (let genre_i of this.anime.genres) {
+        let genre = this.$store.state.genre.find(obj => obj.id === genre_i)
+        this.genres = this.genres + String(genre.name) + ". "
+      }
+    },
     async loadAnime() {
       this.anime = await fetch(
           `${this.$store.getters.getServerUrl}/anime/${this.id}`
       ).then(response => response.json())
-    },
-  }
+      this.loadNameAuthor()
+      this.loadListGenre()
+    }
+  },
 }
 </script>
 

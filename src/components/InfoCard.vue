@@ -1,26 +1,30 @@
 <template>
-  <div class="card mb-3 ">
-    <div class="row g-0">
+  <b-container>
+    <b-row align-h="center">
       <div class="col-md-4">
-        <img :src="`${$store.getters.getServerUrl}`+anime_data.poster" class="img-fluid rounded-start" alt="жаль">
+        <img class="poster" :src="`${$store.getters.getServerUrl}`+anime_data.poster" alt="poster">
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">{{ anime_data.title }}</h5>
+          <p>{{ name }}</p>
           <hr class="featurette-divider">
           <p class="fw-bolder">Жанры</p>
-          {{ $store.getters.getGenresSingle }}
+          {{ list_genre }}
           <hr class="featurette-divider">
           <p class="fw-bolder">Описание</p>
-          <p class="card-text" style="min-height:200px;">{{ anime_data.description }}</p>
+          <p class="card-text">{{ anime_data.description }}</p>
+          <hr class="featurette-divider">
+          <p class="fw-bolder">Мнение автора</p>
+          <p class="card-text">{{ anime_data.opinion }}</p>
           <hr class="featurette-divider">
           <p class="fw-bolder">Оценка</p>
           <p class="card-text">{{ getMarkStatus(anime_data.mark) }} -- {{ getMarkValue(anime_data.mark) }}</p>
 
         </div>
       </div>
-    </div>
-  </div>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -28,40 +32,43 @@ import {mapActions} from "vuex";
 
 export default {
   name: "InfoCard",
-  props: {
-    anime_data: {
-      type: Object,
-      default() {
-        return {}
-      }
-    }
-  },
+  props: ["anime_data", "name", "list_genre"],
   mounted() {
     this.loadListMarks()
   },
-  methods:{
-  ...mapActions([
-    'loadListMarks'
-  ]),
+  methods: {
+    ...mapActions([
+      'loadListMarks',
+    ]),
     getMarkStatus(id) {
-      let obj_mark = this.$store.getters.getMark(id);
-      if (obj_mark != undefined) {
-        return String(obj_mark.status)
+      if (this.$store.state.marks.length != 0) {
+        let obj_mark = this.$store.state.marks.find(mark => mark.id === id)
+        if (obj_mark != undefined) {
+          return obj_mark.status
+        }
       }
     },
     getMarkValue(id) {
-      let obj_mark = this.$store.getters.getMark(id);
-      if (obj_mark != undefined) {
-        return String(obj_mark.value)
+      if (this.$store.state.marks.length != 0) {
+        let obj_mark = this.$store.state.marks.find(mark => mark.id === id)
+        if (obj_mark != undefined) {
+          return obj_mark.value
+        }
       }
-    },
+    }
   }
 }
 </script>
 
 <style scoped>
-.card {
-  background-color: rgba(225, 210, 210, 0.5);
-  max-width: 640px;
+.poster {
+  max-height: 380px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.card-text {
+  min-height: 100px
 }
 </style>

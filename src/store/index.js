@@ -5,15 +5,11 @@ const store = createStore({
         state: {
             backendUrl: "http://127.0.0.1:8000",
             genre: [],
-            genreSingle: '',
             marks: [],
         },
         mutations: {
             set_genre(state, genres) {
                 state.genre = genres;
-            },
-            setOneGenre(state, genres) {
-                state.genreSingle = genres;
             },
             set_marks(state, marks) {
                 state.marks = marks;
@@ -24,9 +20,6 @@ const store = createStore({
                 return fetch(
                     `${this.state.backendUrl}/genre/`,
                 ).then(response => response.json().then(data => commit('set_genre', data)))
-            },
-            setGenresSingle({commit}, list_genre) {
-                commit('setOneGenre', list_genre)
             },
             loadListMarks({commit}) {
                 return fetch(
@@ -40,9 +33,6 @@ const store = createStore({
         getters: {
             getServerUrl: state => {
                 return state.backendUrl
-            },
-            getGenresSingle: state => {
-                return state.genreSingle
             },
             getMark: (state) => (id) => {
                 return state.marks.find(function (mark) {

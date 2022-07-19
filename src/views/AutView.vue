@@ -1,20 +1,16 @@
 <template>
-  <b-container fluid="sm">
-    <div class="aut">
-      <div class="mb-3 row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Имя</label>
-        <div class="col-sm-10">
-          <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="имя"
-                 v-model="user">
-        </div>
-      </div>
-      <div class="mb-3 row">
-        <label for="inputPassword" class="col-sm-2 col-form-label">Пароль</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword" v-model="password">
-        </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3" v-on:click="auth">Ввод</button>
+  <Header/>
+  <b-container>
+    <div class="form_aut col-md-4">
+      <div class="main">
+        <label for="exampleFormControlInput1" class="form-label">Имя</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="имя"
+               v-model="user">
+        <label for="exampleFormControlInput1" class="form-label">Пароль</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="пароль"
+               v-model="password">
+        <div class="p-3 d-grid gap-1 d-md-flex justify-content-md-end">
+          <button type="button" v-on:click="auth" class="btn-sm">Отправить</button>
         </div>
       </div>
     </div>
@@ -25,14 +21,16 @@
 
 
 import axios from "axios";
+import Header from "@/components/Header";
 
 export default {
   name: "AutView",
+  components: {Header},
   methods: {
     goTo() {
       this.$router.push({name: 'home'})
     },
-    async auth() {
+   auth() {
       fetch(`${this.$store.getters.getServerUrl}/auth/login/`, {
         method: "POST",
         headers: {
@@ -44,17 +42,13 @@ export default {
               password: this.password
             }
         )
-      }).then(response => {
-        console.log(response.json())
-      })
+      }).then(response => console.log(response))
       this.goTo()
     }
   },
   data() {
     return {
-      API_URL: `${this.$store.getters.getServerUrl}/api/aut/`,
       user: null,
-      email: '',
       password: '',
 
     }
@@ -64,5 +58,8 @@ export default {
 </script>
 
 <style scoped>
-
+.form_aut{
+  margin-top: 5%;
+  margin-left: 5%;
+}
 </style>

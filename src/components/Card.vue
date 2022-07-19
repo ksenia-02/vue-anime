@@ -6,7 +6,7 @@
           <p class="card-text mb-auto">{{ list_genre }}</p>
         </div>
         <p class="card-text mb-auto">{{ getMarkName(anime_data.mark) }}</p>
-        <h3 class="title mb-0">{{ anime_data.title }}</h3>
+        <p fl="">{{ anime_data.title }}</p>
         <div class="col-md-3 card">
           <b-img :src="`${$store.getters.getServerUrl}`+anime_data.poster"></b-img>
         </div>
@@ -42,15 +42,15 @@ export default {
         this.loadListAuthor()
   },
   mounted() {
-        this.loadListMarks()
+        this.loadListMarks(),
+            this.getGenreFromAPI()
   },
   methods: {
     ...mapActions([
-      'setGenresSingle',
-      'loadListMarks'
+      'loadListMarks',
+        'getGenreFromAPI'
     ]),
     goTo() {
-      this.setGenresSingle(this.list_genre);
       this.$router.push({name: 'SingleView', params: {id: this.anime_data.id}})
     },
     loadListGenre() {
@@ -62,7 +62,7 @@ export default {
     getMarkName(id) {
       let obj_mark = this.$store.getters.getMark(id);
       if (obj_mark != undefined) {
-        return String(obj_mark.status) + "--" + String(obj_mark.value) + "баллов"
+        return String(obj_mark.status) + "--" + String(obj_mark.value) + "б."
       }
     },
     async loadListAuthor() {
@@ -109,9 +109,5 @@ export default {
 .info {
   overflow-x: hidden;
   height: 200px;
-}
-
-.title {
-  height: 90px;
 }
 </style>
