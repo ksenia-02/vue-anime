@@ -15,28 +15,14 @@
 
 import Card from "@/components/Card";
 import Info from "@/components/Info";
+import {toRaw} from "vue";
 
 export default {
   name: "Catalog",
-  props: [],
+  props: ["listAnime"],
   components: {
     Info,
     Card
-  },
-  data() {
-    return {
-      listAnime: []
-    }
-  },
-  created() {
-    this.loadListAnime()
-  },
-  methods: {
-    async loadListAnime() {
-      this.listAnime = await fetch(
-          `${this.$store.getters.getServerUrl}/anime`
-      ).then(response => response.json())
-    }
   }
 }
 </script>

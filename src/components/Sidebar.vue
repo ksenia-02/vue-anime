@@ -10,7 +10,7 @@
     <ul class="nav nav-pills flex-column">
       <div v-for="g in this.$store.state.genre" :key="g.id">
         <li class="nav-item">
-          <a href="#" class="genre nav-link" aria-current="page">
+          <a @click="filter(g.id)" href="#" class="genre nav-link" aria-current="page">
             {{ g.name }}
           </a>
         </li>
@@ -25,6 +25,7 @@ import {mapActions} from 'vuex'
 
 export default {
   name: "Sidebar",
+  props:["filter"],
   data() {
     return {}
   },
@@ -33,7 +34,10 @@ export default {
   methods: {
     ...mapActions([
       'getGenreFromAPI'
-    ])
+    ]),
+    filter(genre) {
+      this.$emit('filter',genre)
+    }
   },
   mounted() {
     this.getGenreFromAPI()
