@@ -1,6 +1,5 @@
 <template>
   <div id="aut">
-    <Header/>
     <b-container>
       <div class="form_aut col-md-4">
         <div class="main">

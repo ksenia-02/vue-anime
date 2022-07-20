@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <Header/>
     <main class="main_page d-flex flex-nowrap">
       <Sidebar
           @filter="filterByGenre"/>

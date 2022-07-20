@@ -1,6 +1,5 @@
 <template>
   <div class="single">
-    <Header/>
     <main class="d-flex flex-nowrap">
       <b-container class="main_page">
         <InfoCard
