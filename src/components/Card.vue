@@ -39,7 +39,7 @@ export default {
   },
   created() {
     this.loadListGenre(),
-        this.loadListAuthor()
+        this.loadAuthor()
   },
   mounted() {
     this.loadListMarks()
@@ -64,7 +64,7 @@ export default {
         return String(obj_mark.status) + "--" + String(obj_mark.value) + "б."
       }
     },
-    async loadListAuthor() {
+    async loadAuthor() {
       this.author = await fetch(
           `${this.$store.getters.getServerUrl}/username/${this.anime_data.user}`
       ).then(response => response.json()).catch((error) => {

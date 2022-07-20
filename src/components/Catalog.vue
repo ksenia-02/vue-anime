@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="sm">
+  <b-container>
     <Info/>
     <div class="catalog row mb-3">
       <Card

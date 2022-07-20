@@ -52,7 +52,7 @@ export default {
     },
     loadListGenre() {
       for (let genre_i of this.anime.genres) {
-        let genre = this.$store.state.genre.find(obj => obj.id === genre_i)
+        let genre = this.$store.state.genre.find(obj => obj.id == genre_i)
         if (genre != undefined) {
           this.genres = this.genres + String(genre.name) + ". "
         }
