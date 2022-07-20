@@ -30,7 +30,7 @@ export default {
     goTo() {
       this.$router.push({name: 'home'})
     },
-   auth() {
+    auth() {
       fetch(`${this.$store.getters.getServerUrl}/auth/login/`, {
         method: "POST",
         headers: {
@@ -42,7 +42,9 @@ export default {
               password: this.password
             }
         )
-      }).then(response => console.log(response))
+      }).then(response => console.log(response)).catch((error) => {
+        console.error('Ошибка:', error);
+      })
       this.goTo()
     }
   },
@@ -58,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-.form_aut{
+.form_aut {
   margin-top: 5%;
   margin-left: 5%;
 }

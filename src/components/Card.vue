@@ -42,13 +42,12 @@ export default {
         this.loadListAuthor()
   },
   mounted() {
-        this.loadListMarks(),
-            this.getGenreFromAPI()
+    this.loadListMarks()
   },
   methods: {
     ...mapActions([
       'loadListMarks',
-        'getGenreFromAPI'
+      'getGenreFromAPI'
     ]),
     goTo() {
       this.$router.push({name: 'SingleView', params: {id: this.anime_data.id}})
@@ -68,7 +67,9 @@ export default {
     async loadListAuthor() {
       this.author = await fetch(
           `${this.$store.getters.getServerUrl}/username/${this.anime_data.user}`
-      ).then(response => response.json())
+      ).then(response => response.json()).catch((error) => {
+        console.error('Ошибка:', error);
+      })
     },
 
   },

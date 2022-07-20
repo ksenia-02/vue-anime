@@ -32,7 +32,6 @@
 
 <script>
 import FormReview from "@/components/FormReview";
-import {toRaw} from "vue";
 
 export default {
   name: "Reviews",
@@ -51,7 +50,9 @@ export default {
     async loadReviews() {
       let all_reviews = await fetch(
           `${this.$store.getters.getServerUrl}/reviews/`
-      ).then(response => response.json())
+      ).then(response => response.json()).catch((error) => {
+        console.error('Ошибка:', error);
+      })
       this.listReview = all_reviews.filter(review => review.anime == this.anime_data.id)
     },
     loadComment(id) {
@@ -67,6 +68,8 @@ export default {
         body: JSON.stringify(data)
       }).then(response => {
         (response.json().then(data => this.addChild(data)))
+      }).catch((error) => {
+        console.error('Ошибка:', error);
       })
     },
     checkParent(review) {
@@ -89,6 +92,8 @@ export default {
         },
         body: JSON.stringify(data)
       }).then(response => {
+      }).catch((error) => {
+        console.error('Ошибка:', error);
       })
     }
   }

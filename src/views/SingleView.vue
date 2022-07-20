@@ -36,8 +36,6 @@ export default {
   },
   created() {
     this.loadAnime()
-  },
-  mounted() {
     this.getGenreFromAPI()
   },
   methods: {
@@ -48,13 +46,14 @@ export default {
       let id_author = toRaw(this.anime).user
       this.author = await fetch(
           `${this.$store.getters.getServerUrl}/username/${id_author}`
-      ).then(response => response.json())
+      ).then(response => response.json()).catch((error) => {
+        console.error('Ошибка:', error);
+      })
     },
     loadListGenre() {
       for (let genre_i of this.anime.genres) {
         let genre = this.$store.state.genre.find(obj => obj.id === genre_i)
-        if (genre === undefined) {
-        } else {
+        if (genre != undefined) {
           this.genres = this.genres + String(genre.name) + ". "
         }
       }
@@ -62,7 +61,9 @@ export default {
     async loadAnime() {
       this.anime = await fetch(
           `${this.$store.getters.getServerUrl}/anime/${this.id}`
-      ).then(response => response.json())
+      ).then(response => response.json()).catch((error) => {
+        console.error('Ошибка:', error);
+      })
       this.loadNameAuthor()
       this.loadListGenre()
     }

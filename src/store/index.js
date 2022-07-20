@@ -19,12 +19,16 @@ const store = createStore({
             getGenreFromAPI({commit}) {
                 return fetch(
                     `${this.state.backendUrl}/genre/`,
-                ).then(response => response.json().then(data => commit('set_genre', data)))
+                ).then(response => response.json().then(data => commit('set_genre', data))).catch((error) => {
+                    console.error('Ошибка:', error);
+                })
             },
             loadListMarks({commit}) {
                 return fetch(
                     `${this.state.backendUrl}/star/`
-                ).then(response => response.json().then(data => commit('set_marks', data)))
+                ).then(response => response.json().then(data => commit('set_marks', data))).catch((error) => {
+                    console.error('Ошибка:', error);
+                })
             }
         }
         ,

@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      allAnime:[],
+      allAnime: [],
       anime: [],
     }
   },
@@ -37,8 +37,10 @@ export default {
     async loadListAnime() {
       this.anime = await fetch(
           `${this.$store.getters.getServerUrl}/anime`
-      ).then(response => response.json())
-      this.allAnime=this.anime
+      ).then(response => response.json()).catch((error) => {
+        console.error('Ошибка:', error);
+      })
+      this.allAnime = this.anime
     },
     filterByGenre(genre) {
       this.anime = toRaw(this.anime)
